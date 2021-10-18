@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: rti-mysql
+    environment:
+      MYSQL_DATABASE: rtitest
+      MYSQL_USER: rtilab
+      MYSQL_PASSWORD: *********
+      MYSQL_ROOT_PASSWORD: *********
+    ports:
+      - "33060:3306"
+    restart: always
+    
+  web:
+    image: php:7.4-fpm-alpine3.14
+    container_name: rti-php
+    ports:
+      - "9000:80"
+    volumes:
+      - ./php/www:/var/www/html
+    links:
+      - mysql
