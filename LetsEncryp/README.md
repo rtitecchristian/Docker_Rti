@@ -1,6 +1,6 @@
 CONTENEDOR DOCKER DE LETSENCRYPT 
 Este contenedor incluye un nginx proxy, no se como configurar el lado de nginx para que funcione
-en el archivo original del compose tiene esta linea de otro nginx que se peude agregar variso virtual host 
+en el archivo original del compose tiene esta linea de otro nginx que se peude agregar varios virtual host 
 ***************************************************************************************************************
   www:
     image: nginx
