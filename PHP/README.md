@@ -1,5 +1,6 @@
 PARA CORRER EL CONTENEDOR DE PHP USE LA SIGUEINTE LINEA
 docker run -p 9000:80 -d -v /var/www/html/:/var/www/html/ php:7.4-alpine3.14
+solo prueba quedo en deshuso porque se incluyo en el dockercompose de mysql 
 
 CONFIGURACION DE NGINX EN LINUX
 vim /etc/nginx/sites-enabled/default
