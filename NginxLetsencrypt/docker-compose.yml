@@ -1,0 +1,49 @@
+version: '3.2'
+
+services:
+        nginx-proxy:
+                image: jwilder/nginx-proxy
+                container_name: "nginx-proxy_RTI"
+                restart: always
+                ports:
+                        - 80:80
+                        - 443:443
+                volumes:
+                        - /var/run/docker.sock:/tmp/docker.sock:ro
+                        - ~/volumen/data/certs:/etc/nginx/certs:ro
+                        - ~/volumen/data/vhostd:/etc/nginx/vhost.d
+                        - html:/usr/share/nginx/html
+                labels:
+                        - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+        letsencrypt:
+                image: jrcs/letsencrypt-nginx-proxy-companion
+                container_name: "letsencrypt_RTI"
+                restart: always
+                environment:
+                      - NGINX_PROXY_CONTAINER=nginx-proxy
+                volumes:
+                        -  ~/volumen/data/certs:/etc/nginx/certs:rw
+                        -  ~/volumen/data/vhostd:/etc/nginx/vhost.d
+                        - html:/usr/share/nginx/html
+                        - /var/run/docker.sock:/var/run/docker.sock:ro
+        web:
+                image: nginx
+                container_name: "nginx_RTI"
+                restart: always
+                expose:
+                        - 80
+                environment:
+                        - VIRTUAL_HOST=xpos.rtitec.com, www.xpos.rtitec.com
+                        - LETSENCRYPT_HOST=xpos.rtitec.com, www.xpos.rtitec.com
+                        - LETSENCRYPT_EMAIL=christian.david@rtitec.com
+                depends_on:
+                        - nginx-proxy
+                        - letsencrypt
+                volumes:
+                       - ~/volumen/nginx/html/www:/usr/share/nginx/html:ro
+
+volumes:
+        certs:
+        html:
+        vhostd:
